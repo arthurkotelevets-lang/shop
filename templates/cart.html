@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Кошик — ПтичкаСиничка</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="logo">
+                <span class="logo-yellow">Птичка</span><span class="logo-blue">Синичка</span>
+            </a>
+            <div class="nav-buttons">
+                <a href="/" class="nav-btn">Головна</a>
+                <a href="/cart" class="cart-btn">Кошик <span class="cart-badge">{{ cart_count }}</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="cart-container">
+            <h2>Ваш кошик</h2>
+            {% if cart_items %}
+                <div class="cart-items-list">
+                    {% for item in cart_items %}
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <h3>{{ item.product.title }}</h3>
+                                <span style="color: #cbd5e1; font-size: 14px;">{{ item.product.price }} грн. × {{ item.qty }} шт.</span>
+                                <div class="cart-item-controls">
+                                    <a href="/cart/minus/{{ item.product.id }}" class="qty-btn">-</a>
+                                    <span style="font-weight: bold; padding: 0 5px;">{{ item.qty }}</span>
+                                    <a href="/cart/plus/{{ item.product.id }}" class="qty-btn">+</a>
+                                    <a href="/cart/remove/{{ item.product.id }}" class="remove-btn">Видалити</a>
+                                </div>
+                            </div>
+                            <div class="cart-item-price">
+                                <strong style="color: #ffcc00; font-size: 16px;">{{ item.item_total }} грн</strong>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="cart-summary">
+                    <h3>Загальна сума: <span style="color: #ffcc00;">{{ total_price }} грн</span></h3>
+                    <a href="/order" class="btn-primary" style="text-align: center; display: block; max-width: 250px; margin-left: auto;">Оформити замовлення</a>
+                </div>
+            {% else %}
+                <p style="text-align: center; color: #cbd5e1; font-size: 16px; margin: 40px 0;">Ваш кошик порожній 🛒</p>
+                <div style="text-align: center;">
+                    <a href="/" class="btn-primary" style="display: inline-block;">Перейти до каталогу</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

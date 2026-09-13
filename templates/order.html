@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Оформлення замовлення — ПтичкаСиничка</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="logo">
+                <span class="logo-yellow">Птичка</span><span class="logo-blue">Синичка</span>
+            </a>
+            <div class="nav-buttons">
+                <a href="/" class="nav-btn">Головна</a>
+                <a href="/cart" class="cart-btn">Кошик <span class="cart-badge">{{ cart_count }}</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="cart-container" style="max-width: 650px;">
+            <a href="/cart" style="color: #38bdf8; text-decoration: none; font-size: 14px; display: inline-block; margin-bottom: 15px; font-weight: 500;">← Назад до кошика</a>
+            <h2>Оформлення замовлення</h2>
+
+            <div style="background: #1f2937; padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #374151;">
+                <h4 style="margin: 0 0 10px 0; color: #ffffff; font-size: 16px;">Склад замовлення:</h4>
+                <ul style="margin: 0; padding-left: 20px; color: #cbd5e1; font-size: 14px;">
+                    {% for item in cart_items %}
+                        <li style="margin-bottom: 4px;">{{ item.product.title }} (×{{ item.qty }}) — <strong style="color: #facc15;">{{ item.item_total }} грн.</strong></li>
+                    {% endfor %}
+                </ul>
+                <div style="margin-top: 12px; border-top: 1px solid #374151; padding-top: 10px; font-weight: bold; font-size: 15px;">
+                    Загальна сума: <span style="color: #facc15;">{{ total_price }} грн.</span>
+                </div>
+            </div>
+
+            <form method="POST">
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; color: #e2e8f0;">Прізвище та ім'я:</label>
+                    <input type="text" name="full_name" required placeholder="Наприклад, Шевченко Тарас" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #1f2937; color: white; box-sizing: border-box; font-size: 15px; outline: none;">
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; color: #e2e8f0;">Ваш номер телефону:</label>
+                    <input type="tel" name="phone" value="+380" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #1f2937; color: white; box-sizing: border-box; font-size: 15px; outline: none;">
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; color: #e2e8f0;">Де зустрітися (адреса або орієнтир):</label>
+                    <input type="text" name="location" required placeholder="Наприклад, ст. м. Хрещатик" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #1f2937; color: white; box-sizing: border-box; font-size: 15px; outline: none;">
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; color: #e2e8f0;">Коли зустрітися (мінімум через 3 дні):</label>
+                    <div style="display: flex; gap: 10px;">
+                        <select name="meeting_date" id="meetingDateSelect" style="flex: 2; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #1f2937; color: white; font-size: 15px; outline: none;">
+                        </select>
+                        <select name="meeting_time" id="meetingTimeSelect" style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #1f2937; color: white; font-size: 15px; outline: none;">
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 10px; font-size: 14px; font-weight: 600; color: #e2e8f0;">Спосіб оплати:</label>
+                    <div style="display: flex; gap: 25px; background: #1f2937; padding: 14px 18px; border-radius: 8px; border: 1px solid #374151;">
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; color: #f8fafc;">
+                            <input type="radio" name="payment" value="cash" checked style="accent-color: #2563eb;"> Готівкою при отриманні
+                        </label>
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; color: #f8fafc;">
+                            <input type="radio" name="payment" value="card" style="accent-color: #2563eb;"> Оплата на картку
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; font-size: 15px;">Підтвердити замовлення</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Генерация дат (от +3 дней)
+        const dateSelect = document.getElementById('meetingDateSelect');
+        const optionsDays = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота'];
+        
+        for (let i = 3; i <= 14; i++) {
+            const d = new Date();
+            d.setDate(d.getDate() + i);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            
+            const opt = document.createElement('option');
+            opt.value = `${year}-${month}-${day}`;
+            opt.textContent = `${day}.${month}.${year} (${optionsDays[d.getDay()]})`;
+            if (i === 3) opt.selected = true;
+            dateSelect.appendChild(opt);
+        }
+
+        // Генерация времени каждые 30 минут с 09:00 до 20:00
+        const timeSelect = document.getElementById('meetingTimeSelect');
+        for (let hour = 9; hour <= 20; hour++) {
+            for (let minute = 0; minute < 60; minute += 30) {
+                if (hour === 20 && minute > 0) continue;
+                
+                const timeStr = String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0');
+                const opt = document.createElement('option');
+                opt.value = timeStr;
+                opt.textContent = timeStr;
+                if (hour === 12 && minute === 0) opt.selected = true;
+                timeSelect.appendChild(opt);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Птичка Синичка</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('index') }}" class="logo">
+                <span class="logo-yellow">Птичка</span><span class="logo-blue">Синичка</span>
+            </a>
+            <div class="nav-buttons">
+                <a href="{{ url_for('index') }}" class="nav-btn">Головна</a>
+                <a href="{{ url_for('cart') }}" class="cart-btn">
+                    Кошик 
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

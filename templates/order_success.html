@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="success-container" style="text-align: center; max-width: 600px; margin: 40px auto; background: #1c2541; padding: 30px; border-radius: 16px; border: 1px solid #3a506b;">
+    <h2>Дякуємо за замовлення, {{ full_name }}! 🎉</h2>
+    <p style="color: #cbd5e1; font-size: 16px;">Ваше замовлення успішно прийнято.</p>
+    
+    {% if payment == 'card' %}
+    <div class="card-payment-info" style="background: #121829; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px solid #3a506b;">
+        <h3 style="color: #ffffff; margin-top: 0;">Реквізити для оплати на картку:</h3>
+        <p class="card-number" style="font-size: 1.2rem; color: #4ea8de; font-weight: bold; letter-spacing: 1px;">4874 0700 7303 6467</p>
+        <p class="card-note" style="color: #cbd5e1; font-size: 14px;">Будь ласка, перекажіть <b style="color: #ffcc00;">{{ total_price }} грн.</b> на цю картку.</p>
+    </div>
+    {% else %}
+    <p class="cash-note" style="font-size: 1.1rem; color: #4ea8de; margin: 20px 0;">
+        Ви обрали оплату <b>готівкою при отриманні</b> на суму <b style="color: #ffcc00;">{{ total_price }} грн.</b>
+    </p>
+    {% endif %}
+
+    <p style="color: #cbd5e1; margin-bottom: 25px;">Ми зв'яжемося з вами за номером <b style="color: #ffffff;">{{ phone }}</b> для підтвердження зустрічі.</p>
+
+    <a href="/" class="btn-primary" style="display: inline-block;">Повернутися до магазину</a>
+</div>
+{% endblock %}

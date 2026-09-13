@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="product-detail-container">
+    <div class="product-detail-img-wrapper">
+        <img src="{{ url_for('static', filename='uploads/' + product.image) }}" alt="{{ product.title }}" class="product-detail-img">
+    </div>
+    <div class="product-detail-info">
+        <h2>{{ product.title }}</h2>
+        <p class="product-detail-price">{{ product.price }} грн.</p>
+        <p class="product-detail-desc">{{ product.description }}</p>
+        
+        <form action="/add_to_cart/{{ product.id }}" method="POST">
+            <button type="submit" class="add-to-cart-btn">Додати в кошик</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
