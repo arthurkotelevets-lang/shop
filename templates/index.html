@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Синичка — Магазин ручної роботи</title>
+    <title>Птичка Синичка — Магазин ручної роботи</title>
     <style>
         * {
             box-sizing: border-box;
@@ -29,8 +29,17 @@
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #0056b3;
             text-decoration: none;
+            display: flex;
+            gap: 4px;
+        }
+        /* Жовто-блакитна назва */
+        .logo .blue-text {
+            color: #0056b3;
+        }
+        .logo .yellow-text {
+            color: #ffcc00;
+            text-shadow: 0 0 1px rgba(0,0,0,0.2); /* для кращої видимості жовтого */
         }
         .cart-link {
             text-decoration: none;
@@ -168,7 +177,11 @@
 <body>
 
     <header>
-        <a href="{{ url_for('index') }}" class="logo">🐦 Синичка</a>
+        <a href="{{ url_for('index') }}" class="logo">
+            <span>🐦</span>
+            <span class="yellow-text">Птичка</span> 
+            <span class="blue-text">Синичка</span>
+        </a>
         <a href="{{ url_for('cart') }}" class="cart-link">🛒 Кошик ({{ cart_count }})</a>
     </header>
 
