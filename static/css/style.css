@@ -162,3 +162,21 @@ body {
     font-size: 14px;
     margin-left: 10px;
 }
+/* Контейнер зображення (обов'язково з overflow: hidden, щоб фото не вилізало за межі картки) */
+.product-image, .card-img-container {
+    overflow: hidden;
+    position: relative;
+}
+
+/* Саме зображення з плавним переходом */
+.product-image img, .card img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Робить анімацію плавною */
+}
+
+/* Збільшення при наведенні на саму картку або на картинку */
+.product-card:hover img, 
+.product-image:hover img {
+    transform: scale(1.08); /* 1.08 означає збільшення на 8%. Можна змінити на 1.1 для більшого ефекту */
+}
