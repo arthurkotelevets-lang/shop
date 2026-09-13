@@ -74,11 +74,14 @@ body {
     border: 1px solid #374151;
     border-radius: 10px;
     overflow: hidden;
-    transition: transform 0.2s;
+    /* Плавная анимация увеличения всей карточки и появления тени */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
+    transform: scale(1.04); /* Увеличивает всю карточку на 4% */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); /* Глубокая тень для объема */
+    z-index: 10; /* Поднимает карточку поверх остальных */
 }
 
 .product-card-link {
