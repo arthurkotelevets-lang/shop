@@ -101,6 +101,7 @@ def product_detail(product_id):
     
     cart = session.get('cart', {})
     cart_count = sum(cart.values())
+    # Використовуємо 'product_detail.html' (або перейменуйте ваш файл product.html на product_detail.html)
     return render_template('product_detail.html', product=product, cart_count=cart_count)
 
 @app.route('/add_to_cart/<int:product_id>', methods=['POST'])
@@ -132,17 +133,33 @@ def cart():
     cart_count = sum(cart.values())
     return render_template('cart.html', cart_items=cart_items, total_price=total_price, cart_count=cart_count)
 
-@app.route('/update_cart/<int:product_id>/<action>', methods=['POST'])
-def update_cart(product_id, action):
+# Додано маршрути для кнопок у cart.html
+@app.route('/cart/plus/<int:product_id>')
+def cart_plus(product_id):
     cart = session.get('cart', {})
     prod_id_str = str(product_id)
     if prod_id_str in cart:
-        if action == 'increase':
-            cart[prod_id_str] += 1
-        elif action == 'decrease':
-            cart[prod_id_str] -= 1
-            if cart[prod_id_str] <= 0:
-                del cart[prod_id_str]
+        cart[prod_id_str] += 1
+    session['cart'] = cart
+    return redirect(url_for('cart'))
+
+@app.route('/cart/minus/<int:product_id>')
+def cart_minus(product_id):
+    cart = session.get('cart', {})
+    prod_id_str = str(product_id)
+    if prod_id_str in cart:
+        cart[prod_id_str] -= 1
+        if cart[prod_id_str] <= 0:
+            del cart[prod_id_str]
+    session['cart'] = cart
+    return redirect(url_for('cart'))
+
+@app.route('/cart/remove/<int:product_id>')
+def cart_remove(product_id):
+    cart = session.get('cart', {})
+    prod_id_str = str(product_id)
+    if prod_id_str in cart:
+        del cart[prod_id_str]
     session['cart'] = cart
     return redirect(url_for('cart'))
 
